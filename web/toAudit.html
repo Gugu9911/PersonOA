@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>无标题文档</title>
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".click").click(function() {
+					$(".tip").fadeIn(200);
+				});
+				$(".tiptop a").click(function() {
+					$(".tip").fadeOut(200);
+				});
+				$(".sure").click(function() {
+					$(".tip").fadeOut(100);
+				});
+				$(".cancel").click(function() {
+					$(".tip").fadeOut(100);
+				});
+			});
+		</script>
+
+		<script type="text/javascript">
+			$(function () {
+				$.post("gugu/ExpenseServlet?method=expenseFindMore",function (result) {
+					for (var i in result){
+						$("#tb").append("<tr>\n" +
+								"\t\t\t\t\t\t<td>"+result[i].realName+"</td>\n" +
+								"\t\t\t\t\t\t<td>"+result[i].totalAmount+"</td>\n" +
+								"\t\t\t\t\t\t<td>"+result[i].expTime+"</td>\n" +
+								"\t\t\t\t\t\t<td>"+result[i].expDesc+"</td>\n" +
+								"\t\t\t\t\t\t<td><a href=\"gugu/ExpenseItemServlet?method=expenseItemFindAll&expid=" + result[i].expId + "\" class=\"tablelink\"> 查看具体请假去向</a></td>\n" +
+								"\t\t\t\t\t\t<td><a href=\"javascript:open('audit.jsp?day="+result[i].totalAmount+"&expid="+result[i].expId+"','','width=500,height=230,left=300,top=300,location=0,scrollbars=0,resizable=0')\" class=\"tablelink\">审核</a> </td>\n" +
+								"\t\t\t\t\t</tr>\n")
+					}
+				},"json")
+			})
+		</script>
+
+
+
+	</head>
+
+	<body>
+
+		<div class="place">
+			<span>位置：</span>
+			<ul class="placeul">
+				<li><a href="#">请假管理</a></li>
+				<li><a href="#">待审请假信息</a></li>
+			</ul>
+		</div>
+
+		<div class="rightinfo">
+
+			<div class="formtitle1"><span>待审请假信息</span></div>
+
+			<table class="tablelist">
+				<thead>
+					<tr>
+						<th>请假申请人<i class="sort"><img src="images/px.gif" /></i></th>
+						<th>请假总天数</th>
+						<th>申请递交时间</th>
+						<th>请假备注</th>
+						<th>查看具体动向</th>
+						<th>审核</th>
+					</tr>
+				</thead>
+				<tbody id="tb">
+
+
+				</tbody>
+			</table>
+
+		</div>
+
+		<script type="text/javascript">
+			$('.tablelist tbody tr:odd').addClass('odd');
+		</script>
+
+	</body>
+
+</html>

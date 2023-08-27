@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>无标题文档</title>
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<link href="css/select.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.idTabs.min.js"></script>
+		<script type="text/javascript" src="js/select-ui.min.js"></script>
+		<script type="text/javascript" src="editor/kindeditor.js"></script>
+		<script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(e) {
+		    $(".select1").uedSelect({
+				width : 345			  
+			});
+			
+		});
+	</script>
+	<script type="text/javascript">
+		KE.show({id:"ecp",width:"800px",height:"300px"});
+	</script>
+
+		<script type="text/javascript">
+
+			$(function () {
+				//发送ajax请求查询部门信息
+				$.post("gugu/DeptServlet?method=deptFindAll2",function (result) {
+					$.each(result,function (i,e) {
+						$("#dept").append("<option value='"+e.deptno+"'>"+e.deptname+"</option>");
+					})
+				},"json")
+
+				//发送ajax请求查询岗位信息
+				$.post("gugu/PositionServlet?method=positionFindAll",function (result) {
+					$.each(result,function (i,e) {
+						$("#position").append("<option  value='"+e.posid+"'>"+e.pname+"</option>")
+					})
+				},"json")
+
+				//发送ajax请求查询领导信息
+				$.post("gugu/EmployeeServlet?method=empFindMgr",function (result) {
+					$.each(result,function (i,e) {
+						$("#mgr").append("<option  value='"+e.empId+"'>"+e.realName+"</option>")
+					})
+				},"json")
+
+			/******************************通过ajax请求提交表单中的数据*******************************/
+
+				$("#sub").click(function () {
+
+					var val = $("form").serialize();
+					var  emerContactPerson= $("#ecp2").val();
+
+					//发送ajax请求
+					$.post("gugu/EmployeeServlet?method=empSave",val+"&emerContactPerson"+emerContactPerson,function (result) {
+						if (result>0){
+							window.location.href="empList.html";
+						}else {
+							alert("添加失败");
+						}
+					},"json")
+
+
+				})
+
+			})
+
+
+
+		</script>
+
+
+	</head>
+
+	<body>
+
+		<div class="place">
+			<span>位置：</span>
+			<ul class="placeul">
+				<li><a href="#">人事管理</a></li>
+				<li><a href="#">添加员工</a></li>
+			</ul>
+		</div>
+
+		<div class="formbody">
+
+			<div class="formtitle"><span>基本信息</span></div>
+
+
+
+		<form action="">
+			<ul class="forminfo">
+					<li>
+						<label>用户名</label>
+						<input name="empId" type="text" class="dfinput"/><i>用户名唯一，今后不可修改请谨慎设置</i></li>
+					<li>
+					<li>
+						<label>密码</label>
+						<input name="password" type="text" class="dfinput"/></li>
+					<li>
+					<li>
+						<label>真实姓名</label>
+						<input name="realName" type="text" class="dfinput" /><i></i></li>
+					<li>
+						<label>性别</label><cite>
+						<input name="sex" type="radio" value="1" checked="checked" />男&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="sex" type="radio" value="0" />女</cite>
+						
+					</li>
+					<li>
+						<label>出生日期</label>
+						<input name="birthDate" type="text" class="dfinput" onfocus="WdatePicker({skin:'whyGreen',lang:'en'})" /></li>
+					<li>
+					<li>
+						<label>入职时间</label>
+						<input name="hireDate" type="text" class="dfinput" onfocus="WdatePicker()"/><i></i></li>
+					
+					<li>
+						<label>离职时间</label>
+						<input name="leaveDate" type="text" class="dfinput" onfocus="WdatePicker()"/><i>1900-01-01为默认值</i></li>
+					<li>
+						<label>是否在职</label><cite>
+						<input name="onDuty" type="radio" value="1" checked="checked" />是&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="onDuty" type="radio" value="2" />否</cite>
+					</li>
+					<li>
+						<label>员工类型</label><cite>
+						<input name="empType" type="radio" value="1" checked="checked" />基层员工&nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="empType" type="radio" value="2" />各级管理人员</cite>
+					</li>
+					<li>
+						<label>所属部门<b>*</b></label>
+						<div class="vocation">
+							<select class="select1" id="dept" name="deptno">
+								<option value="">--请选择部门--</option>
+							</select>
+						</div>
+
+					</li>
+					<li>
+						<label>从事岗位<b>*</b></label>
+						<div class="vocation">
+							<select class="select1" id="position" name="posid">
+								<option value="">--请选择岗位--</option>
+							</select>
+						</div>
+
+					</li>
+					<li>
+						<label>直接上级<b>*</b></label>						
+						<div class="vocation">
+							<select class="select1" id="mgr" name="mgrid">
+								<option value="">--请选择领导--</option>
+							</select>							
+						</div>
+					</li>
+
+					</li>
+					<li>
+						<label>联系方式</label>
+						<input name="phone" type="text" class="dfinput" />
+					</li>
+					<li>
+						<label>QQ号</label>
+						<input name="qq" type="text" class="dfinput" />
+					</li>
+					<li>
+						<label>紧急联系人信息</label>
+						<textarea  cols="10" rows="5" id="ecp2" class="dfinput"></textarea>
+					</li>
+					<li>
+						<label>身份证号</label>
+						<input name="idCard" type="text" class="dfinput" />
+					</li>
+					<li>
+						<label>&nbsp;</label>
+						<input type="button" class="btn" value="确认保存" id="sub"/>
+					</li>
+			</ul>
+		</form>
+
+
+		</div>
+
+	</body>
+
+</html>

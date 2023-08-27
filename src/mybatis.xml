@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+     <!--[1]属性文件的读取-->
+     <properties resource="jdbc.properties"></properties>
+    <!--[2]指定Log4j日志-->
+     <settings>
+         <setting name="logImpl" value="LOG4J"/>
+         <!--开启mybatis中缓存 默认值就是true-->
+         <setting name="cacheEnabled" value="true"/>
+     </settings>
+    <!--[3]给实体类起别名-->
+    <typeAliases>
+        <package name="com.gugu.pojo"/>
+    </typeAliases>
+
+    <!--[4]配置连接数据库环境-->
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${m_driver}"/>
+                <property name="url" value="${m_url}"/>
+                <property name="username" value="${m_username}"/>
+                <property name="password" value="${m_password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--[5]扫描mapper文件-->
+    <mappers>
+       <!--<mapper resource="com/bjsxt/mapper/FlowerMapper.xml"></mapper>-->
+        <!--如果扫描的是包 会直接扫描包下所有的接口，然后在扫描和接口名称一致的xml文件-->
+        <!--1、必须有接口-->
+        <!--2、接口名称必须和xml文件名称一致-->
+        <package name="com.gugu.mapper"/>
+
+    </mappers>
+
+
+
+</configuration>

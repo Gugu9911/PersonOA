@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gugu.mapper.EmployeeMapper">
+
+    <insert id="insert">
+
+           insert into  employee values (#{empId},#{password},#{deptno},#{posid},#{mgrid},#{realName},#{sex},#{birthDate},
+                                         #{hireDate},#{leaveDate},#{onDuty},#{empType},#{phone},#{qq},#{emerContactPerson},#{idCard})
+
+    </insert>
+
+    <update id="update">
+
+         update  employee  set password=#{password},deptno=#{deptno},posid=#{posid},mgrid=#{mgrid},realName=#{realName},
+                               sex=#{sex},birthDate=#{birthDate},hireDate=#{hireDate},leaveDate=#{leaveDate},onDuty=#{onDuty},
+                               empType=#{empType},phone=#{phone},qq=#{qq},emerContactPerson=#{emerContactPerson},idCard=#{idCard}
+                           where      empId=#{empId}
+
+    </update>
+
+    <select id="selectMore"  resultType="employee">
+        SELECT * FROM  employee  e
+        join  dept d on  e.deptno=d.deptno
+        join  position  p  on  e.posid=p.posid
+
+        <where>
+            <if test="param1!='' and param1!=null">
+                e.empid=#{param1}
+            </if>
+            <if test="param2!='' and param2!=null">
+                and e.deptno=#{param2}
+            </if>
+            <if test="param3!='' and param3!=null">
+                and e.onduty=#{param3}
+            </if>
+            <if test="param4!='' and param4!=null">
+                and e.hiredate=#{param4}
+            </if>
+        </where>
+
+    </select>
+
+
+</mapper>
